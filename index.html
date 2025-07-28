@@ -2,74 +2,125 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Kids Math Practice</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Bootstrap CDN -->
-   <link rel="stylesheet" href="style.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Kids Math Fun</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #fce4ec, #e1f5fe);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .main-box {
+      background-color: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      margin-top: 40px;
+    }
+    .result-box {
+      background-color: #f0f4c3;
+      border: 2px dashed #8bc34a;
+      border-radius: 10px;
+      padding: 20px;
+      min-height: 120px;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .form-control {
+      font-size: 18px;
+    }
+    .btn-run {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    h2 {
+      color: #7b1fa2;
+    }
+  </style>
 </head>
-
-<body class="bg-light">
-
-  <div class="container mt-5">
-    <h2 class="text-center mb-4 text-primary">🧮 Kids Math Practice</h2>
-
-    <!-- Options -->
-    <div class="mb-3">
-      <label for="operation" class="form-label">Select Math Activity:</label>
-      <select id="operation" class="form-select">
-        <option value="forward">Forward Counting</option>
-        <option value="backward">Backward Counting</option>
-        <option value="table">Multiplication Table</option>
-      </select>
+<body>
+  <div class="container">
+    <div class="text-center mt-4">
+      <h2>🧮 Welcome to Kids Math Fun</h2>
+      <p class="lead">Select your option via alert</p>
     </div>
 
-    <!-- Input -->
-    <div class="mb-3" id="numberInputDiv">
-      <label for="numberInput" class="form-label">Enter Number:</label>
-      <input type="number" id="numberInput" class="form-control" placeholder="e.g., 5">
-    </div>
-
-    <!-- Button -->
-    <button onclick="showResult()" class="btn btn-success w-100">Show Result</button>
-
-    <!-- Result -->
-    <div class="mt-4">
-      <h5>Result:</h5>
-      <pre id="resultBox" class="p-3 bg-white border rounded" style="min-height: 150px;"></pre>
+    <div class="main-box">
+      <div id="inputArea" class="text-center">
+        <!-- Dynamic input field will be shown here -->
+      </div>
+      <div id="resultBox" class="result-box text-center text-dark fw-bold">
+        Your result will appear here...
+      </div>
     </div>
   </div>
 
-  <!-- JS Code -->
   <script>
-    function showResult() {
-      const operation = document.getElementById("operation").value;
-      const number = parseInt(document.getElementById("numberInput").value);
-      const resultBox = document.getElementById("resultBox");
-      let output = "";
+    let choice = prompt("Choose an number 1 2 3 option:\n1 - Forward Counting\n2 - Backward Counting\n3 - Multiplication Table");
 
-      if (isNaN(number) || number < 1) {
-        resultBox.textContent = "Please enter a valid number greater than 0.";
+    const inputArea = document.getElementById("inputArea");
+    const resultBox = document.getElementById("resultBox");
+
+    if (choice === "1") {
+      inputArea.innerHTML = `
+        <h4>Forward Counting</h4>
+        <input type="number" id="fwdInput" class="form-control" placeholder="Enter a number (e.g. 20)">
+        <button class="btn btn-primary btn-run" onclick="forwardCounting()">Show Forward Counting</button>
+      `;
+    } else if (choice === "2") {
+      inputArea.innerHTML = `
+        <h4>Backward Counting</h4>
+        <input type="number" id="bwdInput" class="form-control" placeholder="Enter a number (e.g. 10)">
+        <button class="btn btn-success btn-run" onclick="backwardCounting()">Show Backward Counting</button>
+      `;
+    } else if (choice === "3") {
+      inputArea.innerHTML = `
+        <h4>Multiplication Table</h4>
+        <input type="number" id="tableInput" class="form-control" placeholder="Enter a number (e.g. 5)">
+        <button class="btn btn-warning btn-run" onclick="multiplicationTable()">Show Table</button>
+      `;
+    } else {
+      inputArea.innerHTML = `<h4 class="text-danger">Invalid Option Selected!</h4>`;
+    }
+
+    function forwardCounting() {
+      const num = parseInt(document.getElementById("fwdInput").value);
+      if (!num || num <= 0) {
+        resultBox.innerHTML = "Please enter a valid number.";
         return;
       }
-
-      if (operation === "forward") {
-        for (let i = 1; i <= number; i++) {
-          output += i + " ";
-        }
-      } else if (operation === "backward") {
-        for (let i = number; i >= 1; i--) {
-          output += i + " ";
-        }
-      } else if (operation === "table") {
-        for (let i = 1; i <= 10; i++) {
-          output += `${number} x ${i} = ${number * i}\n`;
-        }
+      let result = "";
+      for (let i = 1; i <= num; i++) {
+        result += i + " ";
       }
+      resultBox.innerHTML = `📈 Forward Counting up to ${num}:<br>` + result;
+    }
 
-      resultBox.textContent = output;
+    function backwardCounting() {
+      const num = parseInt(document.getElementById("bwdInput").value);
+      if (!num || num <= 0) {
+        resultBox.innerHTML = "Please enter a valid number.";
+        return;
+      }
+      let result = "";
+      for (let i = num; i >= 1; i--) {
+        result += i + " ";
+      }
+      resultBox.innerHTML = `📉 Backward Counting from ${num}:<br>` + result;
+    }
+
+    function multiplicationTable() {
+      const num = parseInt(document.getElementById("tableInput").value);
+      if (!num || num <= 0) {
+        resultBox.innerHTML = "Please enter a valid number.";
+        return;
+      }
+      let result = "";
+      for (let i = 1; i <= 10; i++) {
+        result += `${num} × ${i} = ${num * i}<br>`;
+      }
+      resultBox.innerHTML = `📊 Multiplication Table of ${num}:<br>` + result;
     }
   </script>
-
 </body>
 </html>
